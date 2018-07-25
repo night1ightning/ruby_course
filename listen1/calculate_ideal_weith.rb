@@ -1,7 +1,7 @@
 require 'io/console'
 
 def ideal_weight(growth)
-  growth.to_i - 110
+  growth - 110
 end
 
 puts "Программа подсчета"\
@@ -9,11 +9,12 @@ puts "Программа подсчета"\
   "Введите Enter, чтобы начать.\n"
 STDIN.getch
 
-print '  Ваше имя - '
+print '  Ваше имя : '
 name = gets.chomp
-print '  Ваш рост - '
-growth = gets.chomp
+print '  Ваш рост : '
+growth = gets.to_i
 
+puts ''
 weight = ideal_weight(growth)
 if (weight > 0)
   puts "Здраствуйте \"#{name}\", ваш идеальный вес #{weight}."  

@@ -1,7 +1,7 @@
 require 'io/console'
 
-def area_triangle(a, h)
-  0.5 * a.to_f * h.to_f
+def area_triangle(base, height)
+  0.5 * base * height
 end
 
 puts "Программа подсчета"\
@@ -9,10 +9,12 @@ puts "Программа подсчета"\
   "Введите Enter, чтобы начать.\n"
 STDIN.getch
 
-print '  Основание - '
-a = gets.chomp
-print '  Высота - '
-h = gets.chomp
+print '  Основание : '
+base = gets.to_f
+print '  Высота : '
+height = gets.to_f
 
-puts area_triangle(a, h)
+print "\nРешение: "
+print area_triangle(base, height)
+puts ''
 
