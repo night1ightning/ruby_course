@@ -6,7 +6,7 @@ print "Введите поочередно название товара, цен
   "Введите Enter, чтобы начать.\n"
 STDIN.getch
 
-positions = Hash.new
+positions = {}
 loop do
   puts ''
   print "Введите название товара: "
@@ -21,15 +21,13 @@ loop do
   positions[name] = { count: count, price: price, totals: totals }
 end
 
+totals_order = 0.00
 print "\nИнформация о позициях: \n"
 positions.each do |name, position|
   printf " Название товара: %-9s| Цена: %-5.2f | Количество: %-5i | Итого = %-5.2f\n",
     name, position[:price], position[:count], position[:totals]
-end
-
-totals_order = 0.00
-positions.each do |name, position|
   totals_order += position[:totals]
 end
+
 print "\nИтоговая цена: %5.2f\n" % totals_order
 

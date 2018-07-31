@@ -2,21 +2,12 @@ require 'io/console'
 
 def number_day_of_year(year, month, day)
   year_months = [30, days_february(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-  full_month_days(year_months, month) + day
+  year_months[0...month - 1].reduce(day, :+)
 end
 
-def full_month_days(year_months, month)
-  last_full_month = month - 2
-  return 0 if last_full_month < 0
-  year_months[0..last_full_month].reduce(:+)
-end
 
 def leap_year?(year)
-  return true if (year % 400).zero?
-  if (year % 4).zero? 
-    return true unless (year % 100).zero?
-  end
-  false
+  (year % 400).zero? || (year % 4).zero? && (year % 100).nonzero?
 end
 
 def days_february(year)
