@@ -1,60 +1,75 @@
 class Train
-  attr_accessor :number, :speed
-  attr_reader :type, :number_wagons, :station
+  attr_reader :type, :number, :number_wagons
 
   def initialize(type, number, number_wagons = 0)
-    @type = type.to_s
-    @number = number.to_i
-    @number_wagons = number_wagons.to_i
-    @route = nil
-    @future_station = []
-    @past_station = []
+    @type = type
+    @number = number
+    @number_wagons = number_wagons
   end
 
-  def stop
-    self.speed = 0
-    nil
+  def acceleration(change_value)
+    @speed += change_value
+  end
+
+  def deceleration(change_value)
+    return if @speed.zero?
+    @speed = change_value > @speed ? 0 : @speed - change_value
   end
 
   def add_one_wagon
     return if speed.nonzero?
     @number_wagons += 1
-    nil
   end
 
   def uncoupling_one_wagon
-    return if speed.nonzero?
+    return if speed.nonzero? || @number_wagons.zero?
     @number_wagons -= 1
-    nil
   end
 
   def route=(route)
     return unless route.is_a? Route
     @stations = route.stations
-    @station = @stations.first
-    @future_station = @stations.reverse[0...-1]
-    @past_station = []
-    nil
+    @index_current = 0
+    @last_index = @stations.size - 1;
+    station = @stations[@index_current]
+    station.take_train(self)
   end
 
-  def last_current_next_stations
-    [@past_station[-1], @station, @next_station[-1]]
+  def last_station
+    return if @stations.nil? && @index_current.zero?
+    index_last = @index_current - 1
+    @stations[index_last]
+  end
+
+  def current_station
+    return if @stations.nil?
+    @stations[@index_current]
+  end
+
+  def next_station
+    return if @stations.nil?
+    index_next = @index_current + 1
+    @stations[index_next]
   end
 
   def move_next_station
-    return if  @future_station.empty?
-    station = @future_station.delete_at(-1)
-    @past_station << @station
-    @station  = station
-    nil
+    return if @stations.nil?
+    change_station(1) if @index_current < @last_index
   end
 
   def back_before_station
-    return if  @past_station.empty?
-    station = @past_station.delete_at(-1)
-    @future_station << @station
-    @station = station
-    nil
+    return if @stations.nil?
+    change_station(-1) if @index_current > 0
+  end
+
+  private
+
+  def change_station(step)
+    station = @stations[@index_current]
+    station.take_out(self)
+    @index_current += step
+    station = @stations[@index_current]
+    station.take_train(self)
   end
 end
 

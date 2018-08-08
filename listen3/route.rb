@@ -1,28 +1,20 @@
 class Route
+  attr_reader :stations
 
   def initialize(station_start, station_end)
-    [station_start, station_end].each do |station|
-      unless station.is_a? Station
-        raise ArgumentError, 'Ожидался класс Station'
-      end
-    end
-
-    @station_end = station_end
-    @stations = [station_start]
+    @stations = [station_start, station_end]
   end
 
   def take_point_station(station)
-    @stations << station  
-    nil
+    @stations.insert(-2, station)
   end
 
   def clear_point_station(station)
     @stations.delete(station)
-    nil
   end
 
-  def stations
-    [*@stations, @station_end]
+  def print_stations
+    puts "Stations: #{@stations.join(', ')}."
   end
 end
 
