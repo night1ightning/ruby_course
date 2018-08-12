@@ -30,15 +30,13 @@ class Train
     return unless route.is_a? Route
     @stations = route.stations
     @index_current = 0
-    @last_index = @stations.size - 1;
-    station = @stations[@index_current]
-    station.take_train(self)
+    current_station.take_train(self)
   end
 
-  def last_station
-    return if @stations.nil? && @index_current.zero?
-    index_last = @index_current - 1
-    @stations[index_last]
+  def previous_station
+    return if @stations.nil? || @index_current.zero?
+    index_previous = @index_current - 1
+    @stations[index_previous]
   end
 
   def current_station
@@ -53,13 +51,11 @@ class Train
   end
 
   def move_next_station
-    return if @stations.nil?
-    change_station(1) if @index_current < @last_index
+    change_station(train, 1) if next_station
   end
 
   def back_before_station
-    return if @stations.nil?
-    change_station(-1) if @index_current > 0
+    change_station(train, -1) if previous_station
   end
 
   private

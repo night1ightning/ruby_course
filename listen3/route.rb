@@ -5,6 +5,14 @@ class Route
     @stations = [station_start, station_end]
   end
 
+  def first_station
+    $stations.first
+  end
+
+  def last_station
+    $stations.last
+  end
+
   def take_point_station(station)
     @stations.insert(-2, station)
   end
