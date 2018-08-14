@@ -17,8 +17,7 @@ class Train
   end
 
   def add_one_wagon
-    return if speed.nonzero?
-    @number_wagons += 1
+    @number_wagons += 1 if speed.zero?
   end
 
   def uncoupling_one_wagon
@@ -28,44 +27,41 @@ class Train
 
   def route=(route)
     return unless route.is_a? Route
-    @stations = route.stations
+    @route = route
     @index_current = 0
     current_station.take_train(self)
   end
 
   def previous_station
-    return if @stations.nil? || @index_current.zero?
+    return if @route.nil? || @index_current.zero?
     index_previous = @index_current - 1
-    @stations[index_previous]
+    @route.stations[index_previous]
   end
 
   def current_station
-    return if @stations.nil?
-    @stations[@index_current]
+    @route.stations[@index_current] if @route
   end
 
   def next_station
-    return if @stations.nil?
+    return if @route.nil?
     index_next = @index_current + 1
-    @stations[index_next]
+    @route.stations[index_next]
   end
 
   def move_next_station
-    change_station(train, 1) if next_station
+    change_station(1) if next_station
   end
 
   def back_before_station
-    change_station(train, -1) if previous_station
+    change_station(-1) if previous_station
   end
 
   private
 
   def change_station(step)
-    station = @stations[@index_current]
-    station.take_out(self)
+    current_station.take_out(self)
     @index_current += step
-    station = @stations[@index_current]
-    station.take_train(self)
+    current_station.take_train(self)
   end
 end
 

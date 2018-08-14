@@ -6,11 +6,11 @@ class Route
   end
 
   def first_station
-    $stations.first
+    @stations.first
   end
 
   def last_station
-    $stations.last
+    @stations.last
   end
 
   def take_point_station(station)
@@ -18,7 +18,10 @@ class Route
   end
 
   def clear_point_station(station)
-    @stations.delete(station)
+    return if [first_station, last_station].include? station
+    @stations.delete_if do |point|
+      point == station
+    end
   end
 
   def print_stations
