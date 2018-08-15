@@ -25,7 +25,7 @@ class Train
     @number_wagons -= 1
   end
 
-  def route=(route)
+  def set_route(route)
     return unless route.is_a? Route
     @route = route
     @index_current = 0
@@ -49,19 +49,17 @@ class Train
   end
 
   def move_next_station
-    change_station(1) if next_station
+    return unless next_station
+    current_station.take_out(self)
+    next_station.take_train(self)
+    @index_current += 1
   end
 
   def back_before_station
-    change_station(-1) if previous_station
-  end
-
-  private
-
-  def change_station(step)
+    return unless  previous_station
     current_station.take_out(self)
-    @index_current += step
-    current_station.take_train(self)
+    previous_station.take_train(self)
+    @index_current -= 1
   end
 end
 

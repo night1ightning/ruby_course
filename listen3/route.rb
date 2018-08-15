@@ -6,11 +6,11 @@ class Route
   end
 
   def first_station
-    @stations.first
+    stations.first
   end
 
   def last_station
-    @stations.last
+    stations.last
   end
 
   def take_point_station(station)
