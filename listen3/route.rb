@@ -25,7 +25,8 @@ class Route
   end
 
   def print_stations
-    puts "Stations: #{@stations.join(', ')}."
+    list = stations.map { |station| station.name }.join(',')
+    puts "Stations: #{list}"
   end
 end
 
