@@ -1,4 +1,5 @@
 require_relative '../modules/nameable.rb'
+require_relative '../modules/instance_counter.rb'
 require_relative '../route.rb'
 
 class BaseTrain
@@ -6,21 +7,26 @@ class BaseTrain
   include InstanceCounter
   attr_reader :type, :number, :wagons, :route
 
-  @@trains = []
+  @trains = []
+
+  class << self
+    attr_accessor :trains
+  end
 
   def initialize(type, number)
     @type = type
     @number = number
     @wagons = []
-    @@trains << self
+    self.class.trains << self
+    self.register_instance
   end
 
   def to_s
     "Поезд #{number}(#{type})"
   end
 
-  def find(number)
-    @@trains.select{ |train| train.number == number }
+  def self.find(number)
+    trains.select{ |train| train.number == number }
   end
 
   def acceleration(change_value)
