@@ -7,18 +7,14 @@ class BaseTrain
   include InstanceCounter
   attr_reader :type, :number, :wagons, :route
 
-  @trains = []
-
-  class << self
-    attr_accessor :trains
-  end
+  @@trains = []
 
   def initialize(type, number)
     @type = type
     @number = number
     @wagons = []
-    self.class.trains << self
-    self.register_instance
+    @@trains << self
+    register_instance
   end
 
   def to_s
@@ -26,7 +22,7 @@ class BaseTrain
   end
 
   def self.find(number)
-    trains.select{ |train| train.number == number }
+    @@trains.select{ |train| train.number == number }
   end
 
   def acceleration(change_value)
