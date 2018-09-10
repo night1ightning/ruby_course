@@ -6,7 +6,7 @@ module InstanceCounter
 
   module ClassMethods
     def instances
-      instance_variable_get(:@instance_counts) || 0
+      @instance_counts || 0
     end
   end
 
@@ -15,7 +15,7 @@ module InstanceCounter
     protected
 
     def register_instance
-      counts = self.class.instance_variable_get(:@instance_counts) || 0
+      counts = self.class.instances
       self.class.instance_variable_set(:@instance_counts, counts + 1)
     end
   end
